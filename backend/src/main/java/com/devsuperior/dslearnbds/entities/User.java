@@ -1,10 +1,12 @@
 package com.devsuperior.dslearnbds.entities;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -75,7 +77,8 @@ public class User implements UserDetails, Serializable {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+				.collect(Collectors.toList());
 	}
 
 	public String getPassword() {
